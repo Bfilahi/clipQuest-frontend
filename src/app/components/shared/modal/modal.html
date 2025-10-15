@@ -1,0 +1,19 @@
+<div class="fixed inset-0 mt-14 z-50" id="modal"
+    [ngClass]="{hidden: !modalService.isModalOpen(modalID)}">
+    <div class="fixed inset-0" (click)="closeModal()">
+        <div class="absolute inset-0 bg-indigo-900 opacity-50"></div>
+    </div>
+    <div class="relative z-70 bg-slate-900 max-w-96 mx-auto p-7 rounded-xl shadow-xl">
+        <div class="flex justify-between items-center">
+            <ng-content select="[heading]"></ng-content>
+            
+            <button>
+                <span class="material-icons text-2xl cursor-pointer" (click)="closeModal()">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </span>
+            </button>
+        </div>
+
+        <ng-content></ng-content>
+    </div>
+</div>

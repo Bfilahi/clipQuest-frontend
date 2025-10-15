@@ -1,0 +1,35 @@
+<!-- Login Form -->
+<form #loginForm="ngForm" (ngSubmit)="login()">
+    <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-2">
+            <label>Email</label>
+            <input type="email" placeholder="Enter Email" name="email" [(ngModel)]="credentials.email" #email="ngModel"
+                required 
+                pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
+                class="bg-transparent border border-gray-400 rounded-md p-2 w-full outline-none focus:border-fuchsia-400">
+
+            @if (email.touched && email.dirty && email.errors) {
+                <p class="text-red-400">
+                    Email is invalid.
+                </p>
+            }
+        </div>
+        <div class="flex flex-col gap-2">
+            <label>Password</label>
+            <input type="password" placeholder="Password" name="password" [(ngModel)]="credentials.password" #password="ngModel"
+                required
+                class="bg-transparent border border-gray-400 rounded-md p-2 w-full outline-none focus:border-fuchsia-400">
+
+            @if(password.touched && password.dirty && password.errors){
+                <p class="text-red-400">
+                    Password is invalid.
+                </p>
+            }
+        </div>
+        <button type="submit" class="bg-fuchsia-500 p-3 rounded-md hover:bg-fuchsia-900 cursor-pointer transition duration-300 
+                                    disabled:opacity-50 disabled:bg-fuchsia-800"
+            [disabled]="loginForm.invalid">
+            Submit
+        </button>
+    </div>
+</form>

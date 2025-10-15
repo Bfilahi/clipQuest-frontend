@@ -1,0 +1,58 @@
+<section class="container mx-auto my-8 p-9 bg-slate-900 rounded-sm">
+    @if (!nextStep) {
+        <div>
+            <h3 class="font-bold">Upload Video</h3>
+            <button class="dropbox-border text-xl w-full my-4 py-44 rounded-sm hover:bg-purple-500 hover:border-transparent transition duration-500"
+                    appEventBlocker
+                    (dragend)="isDragOver = false"
+                    (dragover)="isDragOver = true"
+                    (dragenter)="isDragOver = true"
+                    (dragleave)="isDragOver = false"
+                    (mouseleave)="isDragOver = false"
+                    (drop)="storeFile($event)"
+                    [ngClass]="{
+                        'bg-purple-500 border-transparent': isDragOver
+                    }">
+                Drop your file here (mp4 only!)
+            </button>
+        </div>
+
+        <input type="file" (change)="storeFile($event)" class="cursor-pointer w-full">
+    }
+
+    @else {
+        @if (showAlert) {
+            <app-alert [color]="alertColor">
+                <p>{{ alertMsg }}</p>
+            </app-alert>
+        }
+        <h3 class="mb-2 text-xl">Select a Thumbnail</h3>
+        <form [formGroup]="uploadForm" (ngSubmit)="uploadFile()">
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-9 mb-8">
+                <button type="button" class="border-8 border-lime-500 shadow-lg cursor-pointer">
+                    <img src="/Images/1.jpg" alt="Thumbnail">
+                </button>
+                <button type="button" class="shadow-lg cursor-pointer">
+                    <img src="/Images/2.jpg" alt="Thumbnail">
+                </button>
+                <button type="button" class="shadow-lg cursor-pointer">
+                    <img src="/Images/3.jpg" alt="Thumbnail">
+                </button>
+                <button type="button" class="shadow-lg cursor-pointer">
+                    <img src="/Images/1.jpg" alt="Thumbnail">
+                </button>
+            </div>
+
+            <h3 class="text-xl mb-2">Title</h3>
+                <app-input-component [control]="title" placeholder="Enter Title" />
+            <button type="submit" class="bg-fuchsia-500 p-3 rounded-lg block w-fit mt-5 ml-auto cursor-pointer"
+                [disabled]="inSubmission"
+                [ngClass]="{
+                    'opacity-50': inSubmission,
+                    'hover:bg-fuchsia-700': !inSubmission
+                }">
+                Publish
+            </button>
+        </form>
+    }
+</section>

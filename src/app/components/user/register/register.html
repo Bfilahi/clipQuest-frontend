@@ -1,0 +1,46 @@
+@if (showAlert) {
+    <app-alert [color]="alertColor">
+        {{ alertMsg }}
+    </app-alert>
+}
+
+<!-- Registration Form -->
+<form [formGroup]="registerForm" (ngSubmit)="register()">
+    <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-2">
+            <label>Name</label>
+            <app-input-component [control]="registerForm.controls.name" placeholder="Enter Name"/>
+        </div>
+
+        <div class="flex flex-col gap-2">
+            <label>Email</label>
+            <app-input-component [control]="registerForm.controls.email" type="email" placeholder="Enter Email" />
+        </div>
+
+        <div class="flex flex-col gap-2">
+            <label>Age</label>
+            <app-input-component [control]="registerForm.controls.age" type="number" placeholder="Enter Age" />
+        </div>
+
+        <div class="flex flex-col gap-2">
+            <label>Password</label>
+            <app-input-component [control]="registerForm.controls.password" type="password" placeholder="Enter Password" />
+        </div>
+
+        <div class="flex flex-col gap-2">
+            <label>Confirm Password</label>
+            <app-input-component [control]="registerForm.controls.confirmPassword" type="password" placeholder="Confirm Password" />
+        </div>
+
+        <div class="flex flex-col gap-2">
+            <label>Phone Number</label>
+            <app-input-component [control]="registerForm.controls.phoneNumber" placeholder="Enter Phone Number" format="000-000-0000" />
+        </div>
+
+        <button type="submit" class="bg-fuchsia-500 py-3 rounded-md transition duration-300 cursor-pointer hover:bg-fuchsia-900
+                                        disabled:opacity-50 disabled:bg-fuchsia-800"
+            [disabled]="registerForm.invalid">
+            Submit
+        </button>
+    </div>
+</form>

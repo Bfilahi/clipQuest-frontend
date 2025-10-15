@@ -1,0 +1,16 @@
+<!-- Tabs -->
+<ul class="my-4 flex justify-between">
+    @for (tab of tabs; track $index) {
+        <li class="login w-full rounded-md">
+            <a href="" class="text-center py-3 w-full inline-block rounded-md" (click)="selectTab(tab)"
+                [ngClass]="{
+                    'hover:text-fuchsia-500': !tab.active,
+                    'hover:text-white text-white bg-fuchsia-500': tab.active
+                    }">
+                {{ tab.tabTitle }}
+            </a>
+        </li>
+    }
+</ul>
+
+<ng-content></ng-content>
