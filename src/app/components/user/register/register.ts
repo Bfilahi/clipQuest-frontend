@@ -4,6 +4,8 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { InputComponent } from "../../shared/input-component/input-component";
 import { Alert } from "../../shared/alert/alert";
 import { RegisterValidator } from '../../../validators/register-validator';
+import { Auth } from '../../../services/auth';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +17,6 @@ export class Register {
   public alertMsg: string = 'Please wait! your account is being created.';
   public alertColor: any = 'blue';
   public showAlert: boolean = false;
-
 
 
   public registerForm = new FormGroup({
@@ -47,9 +48,35 @@ export class Register {
     ])
   }, [RegisterValidator.match('password', 'confirmPassword')]);
 
-  public register(){
+
+  constructor(private authService: Auth){}
+
+
+  public register(form: FormGroup){
     this.alertMsg = 'Please wait! your account is being created.';
     this.alertColor = 'blue';
     this.showAlert = true;
+
+    const request: RegisterRequest = {
+      firstName: form.value.name.split(' ')[0],
+      lastName: form.value.name.split(' ')[1],
+      age: form.value.age,
+      email: form.value.email,
+      password: form.value.password,
+      phoneNumber: form.value.phoneNumber
+    }
+
+    this.authService.signup(request).subscribe({
+      next: () => {
+        this.alertColor = 'green';
+        this.alertMsg = 'Signup successful';
+        form.reset();
+      },
+      error: (err: HttpErrorResponse) => {
+        this.alertColor = 'red';
+        this.alertMsg = err.error.message || 'Signup failed';
+        console.error(err);
+      }
+    });
   }
 }

@@ -7,7 +7,7 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
   imports: [
     ReactiveFormsModule,
     NgxMaskDirective
-  ],
+],
   templateUrl: './input-component.html',
   styleUrl: './input-component.css',
   providers: [ provideNgxMask() ]

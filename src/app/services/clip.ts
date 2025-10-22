@@ -6,14 +6,16 @@ import { BehaviorSubject, combineLatest, switchMap } from 'rxjs';
 })
 export class Clip {
 
-  public getUserClips(sort$: BehaviorSubject<string>){
-    return combineLatest([
-      // this.auth.user,
-      sort$
-    ]).pipe(
-      // switchMap(user => )
-    )
-  }
+
+
+  // public getUserClips(sort$: BehaviorSubject<string>){
+  //   return combineLatest([
+  //     // this.auth.user,
+  //     sort$
+  //   ]).pipe(
+  //     // switchMap(user => )
+  //   )
+  // }
 
   public updateClip(id: string, title: string){
 

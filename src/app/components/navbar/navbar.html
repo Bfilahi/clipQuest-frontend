@@ -5,15 +5,19 @@
         </a>
 
         <ul class="flex ms-auto mt-1 gap-4">
-            <li><a href="#" (click)="openModal($event)">Login / Register</a></li>
-            <li>
-                <a routerLink="/manage" routerLinkActive="text-fuchsia-400" [routerLinkActiveOptions]="{ exact: true }"
-                    [queryParams]="{ sort: '1' }">
-                    Manage
-                </a>
-            </li>
-            <li><a routerLink="/upload" routerLinkActive="text-fuchsia-400" [routerLinkActiveOptions]="{ exact: true }">Upload</a></li>
-            <li><a routerLink="/about" routerLinkActive="text-fuchsia-400" [routerLinkActiveOptions]="{ exact: true }">About</a></li>
+            @if (!authService.isLoggedIn()) {
+                <li><a href="#" (click)="openModal($event)">Login / Register</a></li>
+            }
+            @else {
+                <li>
+                    <a routerLink="/manage" routerLinkActive="text-fuchsia-400" [routerLinkActiveOptions]="{ exact: true }"
+                        [queryParams]="{ sort: '1' }">
+                        Manage
+                    </a>
+                </li>
+                <li><a routerLink="/upload" routerLinkActive="text-fuchsia-400" [routerLinkActiveOptions]="{ exact: true }">Upload</a></li>            
+                <li><a href="#" (click)="logout()">Logout</a></li>
+            }
         </ul>
     </nav>
 </header>

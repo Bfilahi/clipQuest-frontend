@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Auth } from '../../../services/auth';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Alert } from '../../shared/alert/alert';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule],
+  imports: [FormsModule, Alert],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
@@ -14,7 +17,40 @@ export class Login {
     password: ''
   }
 
-  public login(){
-    
+  public alertMsg: string = 'Please wait! your account is being created.';
+  public showAlert: boolean = false;
+  public alertColor: any = 'blue';
+
+
+  constructor(
+    private authService: Auth,
+    private router: Router
+  ){}
+
+
+
+  public login(form: NgForm){
+    this.showAlert = true;
+    this.alertColor = 'blue';
+    this.alertMsg = 'Please wait! your account is being created.'
+
+    const request: LoginRequest = {
+      email: this.credentials.email,
+      password: this.credentials.password
+    }
+
+    this.authService.login(request).subscribe({
+      next: () => {
+        form.reset();
+        this.showAlert = false;
+        this.router.navigate(['/']);
+      },
+      error: (err: HttpErrorResponse) => {
+        this.showAlert = true;
+        this.alertColor = 'red';
+        this.alertMsg = err.error.message || 'Login failed';
+        console.error(err);
+      }
+    });
   }
 }
