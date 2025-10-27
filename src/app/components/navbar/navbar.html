@@ -10,13 +10,14 @@
             }
             @else {
                 <li>
-                    <a routerLink="/manage" routerLinkActive="text-fuchsia-400" [routerLinkActiveOptions]="{ exact: true }"
+                    <!-- <a routerLink="/manage" routerLinkActive="text-fuchsia-400" [routerLinkActiveOptions]="{ exact: true }"
                         [queryParams]="{ sort: '1' }">
                         Manage
-                    </a>
+                    </a> -->
+                    <a routerLink="/manage" routerLinkActive="text-fuchsia-400" [routerLinkActiveOptions]="{ exact: true }">Manage</a>
                 </li>
                 <li><a routerLink="/upload" routerLinkActive="text-fuchsia-400" [routerLinkActiveOptions]="{ exact: true }">Upload</a></li>            
-                <li><a href="#" (click)="logout()">Logout</a></li>
+                <li><a href="#" (click)="logout($event)">Logout</a></li>
             }
         </ul>
     </nav>

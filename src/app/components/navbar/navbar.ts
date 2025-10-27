@@ -25,13 +25,16 @@ export class Navbar {
     this.modalService.toggleModal('auth');
   }
 
-  public logout(){
+  public logout(event: Event){
+    event.preventDefault();
+    
     this.authService.logout();
-    this.router.navigate(['/']);
-  }
+    const currentUrl = this.authService.getReturnUrl();
 
-  // This should be in auth.service.ts ================
-  // public async logout(){
-  //   await this.router.navigateByUrl('/');
-  // }
+    const guardedRoutes = ['/manage', '/upload'];
+    const isOnGuardedRoute = guardedRoutes.some(route => currentUrl.startsWith(route));
+
+    if(isOnGuardedRoute)
+      this.router.navigate(['/']);
+  }
 }

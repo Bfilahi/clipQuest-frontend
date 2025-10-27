@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Auth } from '../../../services/auth';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Alert } from '../../shared/alert/alert';
+import { ModalService } from '../../../services/modal-service';
 
 @Component({
   selector: 'app-login',
@@ -24,6 +25,7 @@ export class Login {
 
   constructor(
     private authService: Auth,
+    private modalService: ModalService,
     private router: Router
   ){}
 
@@ -43,7 +45,8 @@ export class Login {
       next: () => {
         form.reset();
         this.showAlert = false;
-        this.router.navigate(['/']);
+        this.modalService.toggleModal('auth');
+        this.router.navigateByUrl(`${this.authService.getReturnUrl()}`);
       },
       error: (err: HttpErrorResponse) => {
         this.showAlert = true;

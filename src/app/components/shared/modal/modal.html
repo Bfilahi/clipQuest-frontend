@@ -1,7 +1,6 @@
 @if(!authService.isLoggedIn()){
     <div class="absolute inset-0 mt-14 z-50" id="modal"
-    [ngClass]="
-        {hidden: !modalService.isModalOpen(modalID)}">
+    [ngClass]="{hidden: !modalService.isModalOpen(modalID)}">
         <div class="fixed inset-0" (click)="closeModal()">
             <div class="absolute inset-0 bg-indigo-900 opacity-50"></div>
         </div>

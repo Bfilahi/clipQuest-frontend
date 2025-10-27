@@ -9,8 +9,8 @@
 <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
     <div class="flex flex-col gap-2">
         <div class="flex flex-col gap-2">
-            <label>Email</label>
-            <input type="email" placeholder="Enter Email" name="email" [(ngModel)]="credentials.email" #email="ngModel"
+            <label for="email">Email</label>
+            <input type="email" placeholder="Enter Email" id="email" name="email" [(ngModel)]="credentials.email" #email="ngModel"
                 required 
                 pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
                 class="bg-transparent border border-gray-400 rounded-md p-2 w-full outline-none focus:border-fuchsia-400
@@ -23,8 +23,8 @@
             }
         </div>
         <div class="flex flex-col gap-2">
-            <label>Password</label>
-            <input type="password" placeholder="Password" name="password" [(ngModel)]="credentials.password" #password="ngModel"
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Password" name="password" [(ngModel)]="credentials.password" #password="ngModel"
                 required
                 class="bg-transparent border border-gray-400 rounded-md p-2 w-full outline-none focus:border-fuchsia-400
                 placeholder:opacity-30">

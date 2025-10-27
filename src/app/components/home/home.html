@@ -21,72 +21,18 @@
     <h1 class="mt-4 mb-12 font-bold text-2xl">Recommended for you</h1>
 
     <div class="grid grid-cols-1 mb-8 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <a href="#" class="rounded-lg overflow-hidden bg-slate-900 hover:-translate-y-2 hover:bg-fuchsia-900 hover:shadow-2xl transition duration-300">
-            <img src="/Images/1.jpg" alt="Thumbnail-1">
+        @for (clip of clips; track clip.id) {
+            <a routerLink="/clip/{{clip.id}}" class="rounded-lg overflow-hidden bg-slate-900 hover:-translate-y-2 hover:bg-fuchsia-900 hover:shadow-2xl transition duration-300">
+                <img src="{{ clip.thumbnailUrl }}" alt="{{ clip.title }}">
 
-            <div class="p-4">
-                <h2 class="text-xl mb-2">Game Highlighting Clip</h2>
-                <p>
-                    Filahi AB &#183;
-                    <span class="text-gray-400">March 31, 2024</span>
-                </p>
-            </div>
-        </a>
-        <a href="#" class="rounded-lg overflow-hidden bg-slate-900 hover:-translate-y-2 hover:bg-fuchsia-900 hover:shadow-2xl transition duration-300">
-            <img src="/Images/2.jpg" alt="Thumbnail-1">
-
-            <div class="p-4">
-                <h2 class="text-xl mb-2">Game Highlighting Clip</h2>
-                <p>
-                    Filahi AB &#183;
-                    <span class="text-gray-400">March 31, 2024</span>
-                </p>
-            </div>
-        </a>
-        <a href="#" class="rounded-lg overflow-hidden bg-slate-900 hover:-translate-y-2 hover:bg-fuchsia-900 hover:shadow-2xl transition duration-300">
-            <img src="/Images/3.jpg" alt="Thumbnail-1">
-
-            <div class="p-4">
-                <h2 class="text-xl mb-2">Game Highlighting Clip</h2>
-                <p>
-                    Filahi AB &#183;
-                    <span class="text-gray-400">March 31, 2024</span>
-                </p>
-            </div>
-        </a>
-        <a href="#" class="rounded-lg overflow-hidden bg-slate-900 hover:-translate-y-2 hover:bg-fuchsia-900 hover:shadow-2xl transition duration-300">
-            <img src="/Images/1.jpg" alt="Thumbnail-1">
-
-            <div class="p-4">
-                <h2 class="text-xl mb-2">Game Highlighting Clip</h2>
-                <p>
-                    Filahi AB &#183;
-                    <span class="text-gray-400">March 31, 2024</span>
-                </p>
-            </div>
-        </a>
-        <a href="#" class="rounded-lg overflow-hidden bg-slate-900 hover:-translate-y-2 hover:bg-fuchsia-900 hover:shadow-2xl transition duration-300">
-            <img src="/Images/2.jpg" alt="Thumbnail-1">
-
-            <div class="p-4">
-                <h2 class="text-xl mb-2">Game Highlighting Clip</h2>
-                <p>
-                    Filahi AB &#183;
-                    <span class="text-gray-400">March 31, 2024</span>
-                </p>
-            </div>
-        </a>
-        <a href="#" class="rounded-lg overflow-hidden bg-slate-900 hover:-translate-y-2 hover:bg-fuchsia-900 hover:shadow-2xl transition duration-300">
-            <img src="/Images/3.jpg" alt="Thumbnail-1">
-
-            <div class="p-4">
-                <h2 class="text-xl mb-2">Game Highlighting Clip</h2>
-                <p>
-                    Filahi AB &#183;
-                    <span class="text-gray-400">March 31, 2024</span>
-                </p>
-            </div>
-        </a>
-
+                <div class="p-4">
+                    <h2 class="text-xl mb-2">{{ clip.title }}</h2>
+                    <p>
+                        {{ clip.user.firstName }} &#183;
+                        <span class="text-gray-400">{{ clip.createdDate }}</span>
+                    </p>
+                </div>
+            </a>
+        }
     </div>
 </section>
