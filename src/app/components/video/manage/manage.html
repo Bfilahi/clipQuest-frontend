@@ -1,142 +1,32 @@
 <section class="container mx-auto p-4 flex justify-between bg-slate-900 mt-8 rounded-sm">
-    <a routerLink="/upload" class="bg-fuchsia-900 text-xl py-4 px-9 rounded-sm">Upload Videos</a>
-    <select class="text-xl outline-none py-4 px-9 rounded-sm appearance-none border border-white"
-            (change)="sort($event)">
-        <option class="text-black" value="1" [selected]="videoOrder === '1'">Recent Uploads</option>
-        <option class="text-black" value="2" [selected]="videoOrder === '2'">Oldest Uploads</option>
-    </select>
+    <a routerLink="/upload" class="bg-fuchsia-900 text-sm md:text-xl p-4 md:px-9 rounded-sm">Upload Videos</a>
 </section>
 
-<section class="container mx-auto mt-14 mb-9">
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-
-        <div class="rounded-xl overflow-hidden shadow-xl">
-            <a href="#">
-                <img src="/Images/1.jpg" alt="Thumbnail">
-            </a>
-            <div class="bg-slate-900 py-5 px-3 flex flex-wrap gap-2">
-                <a href="#" class="text-xl me-4 block">Game Highlighting Clip</a>
-                <a href="#" class="text-sm bg-gray-500 block px-2 py-1 rounded-md">
-                    Copy Link
+<section class="container mx-auto mt-14 mb-9 px-4">
+    <div class="grid grid-cols-1 mb-8 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        @for (clip of clips(); track clip.id) {
+            <div class="rounded-xl overflow-hidden shadow-xl">
+                <a href="#">
+                    <img src="{{clip.thumbnailUrl}}" alt="{{clip.title}} thumbnail">
                 </a>
+                <div class="bg-slate-900 py-5 px-3 flex flex-wrap gap-2">
+                    <a href="#" class="text-sm me-4 block">{{ clip.title }}</a>
+                    <a href="#" class="text-xs bg-gray-500 block px-2 py-1 rounded-md">
+                        Copy Link
+                    </a>
+                </div>
+                <div class="bg-slate-700 flex justify-between btn-border relative">
+                    <a href="#" class="w-full py-4 text-center hover:text-fuchsia-400 transition duration-300" 
+                        (click)="openModal($event, clip)">
+                        <span class="material-icons">Edit</span>
+                    </a>
+                    <a href="#" class="w-full py-4 text-center hover:text-fuchsia-400 transition duration-300">
+                        <span class="material-icons">Delete</span>
+                    </a>
+                </div>
             </div>
-            <div class="bg-slate-700 flex justify-between btn-border relative">
-                <a href="#" class="w-full py-4 text-center hover:text-fuchsia-400 transition duration-300" 
-                    (click)="openModal($event)">
-                    <span class="material-icons">Edit</span>
-                </a>
-                <a href="#" class="w-full py-4 text-center hover:text-fuchsia-400 transition duration-300">
-                    <span class="material-icons">Delete</span>
-                </a>
-            </div>
-        </div>
-
-        <div class="rounded-xl overflow-hidden shadow-xl">
-            <a href="#">
-                <img src="/Images/1.jpg" alt="Thumbnail">
-            </a>
-            <div class="bg-slate-900 py-5 px-3 flex flex-wrap gap-2">
-                <a href="#" class="text-xl me-4 block">Game Highlighting Clip</a>
-                <a href="#" class="text-sm bg-gray-500 block px-2 py-1 rounded-md">
-                    Copy Link
-                </a>
-            </div>
-            <div class="bg-slate-700 flex justify-between btn-border relative">
-                <a href="#" class="w-full py-4 text-center hover:text-fuchsia-400 transition duration-300"
-                    (click)="openModal($event)">
-                    <span class="material-icons">Edit</span>
-                </a>
-                <a href="#" class="w-full py-4 text-center hover:text-fuchsia-400 transition duration-300">
-                    <span class="material-icons">Delete</span>
-                </a>
-            </div>
-        </div>
-
-        <div class="rounded-xl overflow-hidden shadow-xl">
-            <a href="#">
-                <img src="/Images/1.jpg" alt="Thumbnail">
-            </a>
-            <div class="bg-slate-900 py-5 px-3 flex flex-wrap gap-2">
-                <a href="#" class="text-xl me-4 block">Game Highlighting Clip</a>
-                <a href="#" class="text-sm bg-gray-500 block px-2 py-1 rounded-md">
-                    Copy Link
-                </a>
-            </div>
-            <div class="bg-slate-700 flex justify-between btn-border relative">
-                <a href="#" class="w-full py-4 text-center hover:text-fuchsia-400 transition duration-300"
-                    (click)="openModal($event)">
-                    <span class="material-icons">Edit</span>
-                </a>
-                <a href="#" class="w-full py-4 text-center hover:text-fuchsia-400 transition duration-300">
-                    <span class="material-icons">Delete</span>
-                </a>
-            </div>
-        </div>
-
-        <div class="rounded-xl overflow-hidden shadow-xl">
-            <a href="#">
-                <img src="/Images/1.jpg" alt="Thumbnail">
-            </a>
-            <div class="bg-slate-900 py-5 px-3 flex flex-wrap gap-2">
-                <a href="#" class="text-xl me-4 block">Game Highlighting Clip</a>
-                <a href="#" class="text-sm bg-gray-500 block px-2 py-1 rounded-md">
-                    Copy Link
-                </a>
-            </div>
-            <div class="bg-slate-700 flex justify-between btn-border relative">
-                <a href="#" class="w-full py-4 text-center hover:text-fuchsia-400 transition duration-300"
-                    (click)="openModal($event)">
-                    <span class="material-icons">Edit</span>
-                </a>
-                <a href="#" class="w-full py-4 text-center hover:text-fuchsia-400 transition duration-300">
-                    <span class="material-icons">Delete</span>
-                </a>
-            </div>
-        </div>
-
-        <div class="rounded-xl overflow-hidden shadow-xl">
-            <a href="#">
-                <img src="/Images/1.jpg" alt="Thumbnail">
-            </a>
-            <div class="bg-slate-900 py-5 px-3 flex flex-wrap gap-2">
-                <a href="#" class="text-xl me-4 block">Game Highlighting Clip</a>
-                <a href="#" class="text-sm bg-gray-500 block px-2 py-1 rounded-md">
-                    Copy Link
-                </a>
-            </div>
-            <div class="bg-slate-700 flex justify-between btn-border relative">
-                <a href="#" class="w-full py-4 text-center hover:text-fuchsia-400 transition duration-300"
-                    (click)="openModal($event)">
-                    <span class="material-icons">Edit</span>
-                </a>
-                <a href="#" class="w-full py-4 text-center hover:text-fuchsia-400 transition duration-300">
-                    <span class="material-icons">Delete</span>
-                </a>
-            </div>
-        </div>
-
-        <div class="rounded-xl overflow-hidden shadow-xl">
-            <a href="#">
-                <img src="/Images/1.jpg" alt="Thumbnail">
-            </a>
-            <div class="bg-slate-900 py-5 px-3 flex flex-wrap gap-2">
-                <a href="#" class="text-xl me-4 block">Game Highlighting Clip</a>
-                <a href="#" class="text-sm bg-gray-500 block px-2 py-1 rounded-md">
-                    Copy Link
-                </a>
-            </div>
-            <div class="bg-slate-700 flex justify-between btn-border relative">
-                <a href="#" class="w-full py-4 text-center hover:text-fuchsia-400 transition duration-300"
-                    (click)="openModal($event)">
-                    <span class="material-icons">Edit</span>
-                </a>
-                <a href="#" class="w-full py-4 text-center hover:text-fuchsia-400 transition duration-300">
-                    <span class="material-icons">Delete</span>
-                </a>
-            </div>
-        </div>
-
+        }
     </div>
 </section>
 
-<app-edit [activeClip]="activeClip" (update)="update($event)" />
+<app-edit [activeClip]="activeClip" (refresh)="refresh($event)"/>

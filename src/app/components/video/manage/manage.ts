@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
+import { Component, OnInit, signal } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ModalService } from '../../../services/modal-service';
 import { Edit } from "../edit/edit";
+import { ClipResponse } from '../../../response/clipResponse';
+import { ClipService } from '../../../services/clipService';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 @Component({
@@ -12,44 +15,49 @@ import { Edit } from "../edit/edit";
 })
 export class Manage implements OnInit{
 
-  public videoOrder: string = '1';
-  public activeClip: null = null; // type is: activeClip: IClip | null = null;
+  public activeClip!: ClipResponse;
+  public clips = signal<ClipResponse[]>([]);
+
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private clipService: ClipService
   ){}
 
   public ngOnInit(): void {
-    this.route.queryParams.subscribe((params: Params) => {
-      this.videoOrder = params?.['sort'] === '2' ? params?.['sort'] : '1';
-    });
+    this.listUserClips();
   }
 
-  public sort(event: Event){
-    const { value } = (event.target as HTMLSelectElement);
-
-    // this.router.navigateByUrl(`/manage?sort=${value}`);
-
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {
-        sort: value
-      }
-    })
-  }
-
-  public openModal(event: Event){
+  public openModal(event: Event, clip: ClipResponse){
     event.preventDefault();
 
-    // this.activeClip = clip;   // 'clip' is passed to the function from the template, it contains the data of the clip (title)
-                                // because we want to populate the modal with that data.
-
+    this.activeClip = clip;
     this.modalService.toggleModal('editClip');
   }
 
-  public update(event: Event){  // it should be: (event: IClip){}
+  public refresh(event: ClipResponse){
+    const currentClips = this.clips();
 
+    currentClips.forEach(c => {
+      if(c.id === event.id){
+        c.title = event.title;
+        c.description = event.description;
+      }
+    });
+
+    this.clips.set(currentClips);
+  }
+
+  public listUserClips(){
+    this.clipService.getUserClips().subscribe({
+      next: (data: ClipResponse[]) => {
+        this.clips.set(data);
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error(err);
+      }
+    });
   }
 }

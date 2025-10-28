@@ -1,11 +1,14 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ModalService } from '../../../services/modal-service';
 import { Modal } from "../../shared/modal/modal";
 import { Alert } from "../../shared/alert/alert";
 import { InputComponent } from "../../shared/input-component/input-component";
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Clip } from '../../../services/clip';
+import { ClipRequest } from '../../../request/clipRequest';
+import { ClipService } from '../../../services/clipService';
+import { ClipResponse } from '../../../response/clipResponse';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-edit',
@@ -13,30 +16,20 @@ import { Clip } from '../../../services/clip';
   templateUrl: './edit.html',
   styleUrl: './edit.css'
 })
-export class Edit implements OnInit, OnDestroy, OnChanges{
+export class Edit implements OnInit, OnDestroy{
 
   constructor(
     private modalService: ModalService,
-    private clipService: Clip
+    private clipService: ClipService
   ){}
 
-  @Input() activeClip: null = null;  // pass the active clip from <app-edit /> in manage.html ([activeClip] = "activeClip")
-    // the type is activeClip: IClip | null = null;
-  @Output() update = new EventEmitter();
+  @Input() activeClip!: ClipResponse;
+  @Output() refresh = new EventEmitter();
 
-  public clipID = new FormControl('', {
-    nonNullable: true
-  });
-  public title = new FormControl('', {
-    validators: [
-      Validators.required,
-      Validators.minLength(3)
-    ],
-    nonNullable: true
-  });
   public editForm = new FormGroup({
-    title: this.title,
-    id: this.clipID
+    clipID: new FormControl('', {nonNullable: true}),
+    title: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    description: new FormControl('', [Validators.required, Validators.minLength(3)])
   });
 
   public showAlert: boolean = false;
@@ -53,39 +46,35 @@ export class Edit implements OnInit, OnDestroy, OnChanges{
     this.modalService.unregister('editClip');
   }
 
-  public ngOnChanges(): void {
-    if(!this.activeClip)
-      return;
-
-    // this.clipID.setValue(this.activeClip.docID);
-    // this.clipID.setValue(this.activeClip.title);
-  }
-
-  public submit(){
-    if(!this.activeClip)
-      return;
-
+  public submit(form: FormGroup){
     this.showAlert = true;
     this.alertColor = 'blue';
     this.alertMsg = 'Please wait! Updating clip.';
-    this.inSubmission = true;
 
-    try{
-      this.clipService.updateClip(this.clipID.value, this.title.value);
-    }
-    catch(e){
-      this.inSubmission = false;
-      this.alertColor = 'red';
-      this.alertMsg = 'Something went wrong. Try again later.';
-      return;
-    }
+    const request: ClipRequest = {
+      title: form.value.title,
+      description: form.value.description
+    };
 
-    // this.activeClip.title = this.title.value;
-    this.update.emit(this.activeClip);
+    this.clipService.updateClip(this.activeClip?.id, request).subscribe({
+      next: () => {
+        this.alertColor = 'green';
+        this.alertMsg = 'Success!.';
+        form.reset();
 
-    this.inSubmission = false;
-    this.alertColor = 'green';
-    this.alertMsg = 'Success!.';
+        setTimeout(() => this.showAlert = false, 2000);
 
+        const updatedClip: ClipResponse = this.activeClip;
+        updatedClip.title = request.title;
+        updatedClip.description = request.description;
+        this.refresh.emit(updatedClip);
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error(err);
+        this.alertColor = 'red';
+        this.alertMsg = 'Something went wrong. Try again later.';
+      }
+    });
   }
+
 }
