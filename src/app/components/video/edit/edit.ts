@@ -9,10 +9,11 @@ import { ClipRequest } from '../../../request/clipRequest';
 import { ClipService } from '../../../services/clipService';
 import { ClipResponse } from '../../../response/clipResponse';
 import { HttpErrorResponse } from '@angular/common/http';
+import { SubmitButton } from "../../shared/submit-button/submit-button";
 
 @Component({
   selector: 'app-edit',
-  imports: [CommonModule, Modal, Alert, InputComponent, ReactiveFormsModule],
+  imports: [CommonModule, Modal, Alert, InputComponent, ReactiveFormsModule, SubmitButton],
   templateUrl: './edit.html',
   styleUrl: './edit.css'
 })
@@ -47,6 +48,8 @@ export class Edit implements OnInit, OnDestroy{
   }
 
   public submit(form: FormGroup){
+    form.disable();
+
     this.showAlert = true;
     this.alertColor = 'blue';
     this.alertMsg = 'Please wait! Updating clip.';
@@ -68,13 +71,15 @@ export class Edit implements OnInit, OnDestroy{
         updatedClip.title = request.title;
         updatedClip.description = request.description;
         this.refresh.emit(updatedClip);
+        form.enable();
       },
       error: (err: HttpErrorResponse) => {
         console.error(err);
         this.alertColor = 'red';
         this.alertMsg = 'Something went wrong. Try again later.';
+        form.enable();
       }
     });
-  }
+  };
 
 }

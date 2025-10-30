@@ -51,8 +51,7 @@ export class Clip implements OnInit{
   public ngOnInit(): void {
     this.route.params.subscribe((params: Params)=> {
       this.id = params?.['id'];
-      this.getClip();
-      this.getComments();
+      this.registerView();
     });
 
     if(this.authService.isLoggedIn())
@@ -105,7 +104,8 @@ export class Clip implements OnInit{
 
     this.commentService.addComment(this.id, form.value.comment).subscribe({
       next: (data: CommentResponse) => {
-        this.comments().push(data);
+        this.comments.update((prev) => [...prev, data]);
+        this.userComments.update((prev) => [...prev, data]);
       },
       error: (err: HttpErrorResponse) => {
         console.error(err);
@@ -119,6 +119,9 @@ export class Clip implements OnInit{
   public deleteComment(event: Event, id: number){
     event.preventDefault();
 
+    if(!confirm('Are you sure you want to delete this comment?'))
+      return;
+
     this.commentService.deleteComment(id).subscribe({
       next: () => {
         this.getComments();
@@ -130,31 +133,15 @@ export class Clip implements OnInit{
   }
 
 
-  public isUserComment(id: number): boolean{
+  public checkUserComment(id: number): boolean{
     return this.userComments().some(c => c.id === id);
   }
 
 
-  private getClip(){
-    const player = videojs(this.target.nativeElement);
-
+  private registerView(){
     this.clipInteractionService.view(this.id).subscribe({
-      error: (err: HttpErrorResponse) => {
-        console.error(err);
-      }
-    });
-       
-    this.clipService.getClip(this.id).subscribe({
-      next: (data: ClipResponse) => {
-        this.clip.set(data);
-        this.likesCount.set(data.videoLikeResponse.likesCount);
-        this.dislikesCount.set(data.videoLikeResponse.dislikesCount);
-
-        player.src({
-          src: this.clip()?.pathFile,
-          type: 'video/mp4',
-        });
-        // player.autoplay(true);
+      next: () => {
+        this.getClip();
       },
       error: (err: HttpErrorResponse) => {
         console.error(err);
@@ -162,6 +149,29 @@ export class Clip implements OnInit{
     });
   }
 
+
+  private getClip(){
+    const player = videojs(this.target.nativeElement);
+    
+    this.clipService.getClip(this.id).subscribe({
+      next: (data: ClipResponse) => {
+        this.clip.set(data);
+        this.likesCount.set(data.videoLikeResponse.likesCount);
+        this.dislikesCount.set(data.videoLikeResponse.dislikesCount);
+
+        this.getComments();
+
+        player.src({
+          src: this.clip()?.pathFile,
+          type: 'video/mp4',
+        });
+        player.autoplay(true);
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error(err);
+      }
+    });
+  }
 
   private getLikeInfo(){
     this.clipInteractionService.getLikeStatus(this.id).subscribe({
@@ -182,8 +192,10 @@ export class Clip implements OnInit{
       next: (data: CommentResponse[]) => {
         this.comments.set(data);
 
-        if(this.comments().length > 0)
-          this.getUserComments();
+        if(this.comments().length > 0){
+          if(this.authService.isLoggedIn())
+            this.getUserComments();
+        }
       },
       error: (err: HttpErrorResponse) => {
         console.error(err);

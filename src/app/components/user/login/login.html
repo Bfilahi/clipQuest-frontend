@@ -1,11 +1,15 @@
 @if (showAlert) {
     <app-alert [color]="alertColor">
-        {{ alertMsg }}
+        <div class="flex items-center justify-center gap-6">
+            <p>{{ alertMsg }}</p>
+
+            @if(alertColor === 'blue'){
+                <img src="/spinner.gif" alt="" class="w-[2em]">
+            }
+        </div>
     </app-alert>
 }
 
-
-<!-- Login Form -->
 <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
     <div class="flex flex-col gap-2">
         <div class="flex flex-col gap-2">
@@ -35,10 +39,7 @@
                 </p>
             }
         </div>
-        <button type="submit" class="bg-fuchsia-500 p-3 rounded-md hover:bg-fuchsia-900 cursor-pointer transition duration-300 
-                                    disabled:opacity-50 disabled:bg-fuchsia-800"
-            [disabled]="loginForm.invalid">
-            Submit
-        </button>
+
+        <app-submit-button [form]="loginForm" [text]="'Submit'" [width]="'full'" [isDisabled]="isDisabled" />
     </div>
 </form>

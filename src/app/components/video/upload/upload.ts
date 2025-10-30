@@ -1,18 +1,21 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { EventBlocker } from '../../../directives/event-blocker';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputComponent } from "../../shared/input-component/input-component";
-import { v4 as uuid } from 'uuid';
 import { Alert } from "../../shared/alert/alert";
+import { SubmitButton } from "../../shared/submit-button/submit-button";
+import { ClipService } from '../../../services/clipService';
+import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-upload',
-  imports: [CommonModule, EventBlocker, ReactiveFormsModule, InputComponent, Alert],
+  imports: [CommonModule, EventBlocker, ReactiveFormsModule, InputComponent, Alert, SubmitButton],
   templateUrl: './upload.html',
   styleUrl: './upload.css'
 })
-export class Upload implements OnDestroy{
+export class Upload {
 
   public isDragOver: boolean = false;
   public file: File | null = null;
@@ -20,53 +23,71 @@ export class Upload implements OnDestroy{
   public showAlert: boolean = false;
   public alertColor: any = 'blue';
   public alertMsg: string = 'Please wait! Your clip is being uploaded';
-  public inSubmission: boolean = false;
-
-  public ngOnDestroy(): void {
-    
-  }
-
-  public title = new FormControl('', {
-    validators: [
-      Validators.required,
-      Validators.minLength(3)
-    ],
-    nonNullable: true
-  });
-
 
   public uploadForm = new FormGroup({
-    title: this.title
+    title: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    description: new FormControl('', [Validators.required, Validators.minLength(3)])
   });
 
-  public storeFile(event: Event){
+
+  constructor(
+    private clipService: ClipService,
+    private router: Router
+  ){}
+
+
+
+  public storeFile(event: Event){    
     this.isDragOver = false;
 
     this.file = (event as DragEvent).dataTransfer ? 
                 (event as DragEvent).dataTransfer?.files.item(0) ?? null : 
                 (event.target as HTMLInputElement).files?.item(0) ?? null;
 
-    if(!this.file || this.file.type !== 'video/mp4')
+    if(!this.file || this.file.type !== 'video/mp4'){
+      this.showAlert = true;
+      this.alertMsg = 'Upload MP4 files only';
+      this.alertColor = 'red';
       return;
+    }
+
+    this.showAlert = false;
+
+    const titleWithoutExtension = this.file.name.replace(/\.[^/.]+$/, '') ?? '';
+    this.uploadForm.controls.title.setValue(titleWithoutExtension);
 
     this.nextStep = true;
-
-    const titleWithoutExtension = this.file.name.replace(/\.[^/.]+$/, '');
-    this.title.setValue(titleWithoutExtension);
   }
 
-  public uploadFile(){
-    this.uploadForm.disable();
-
+  public uploadFile(form: FormGroup){
+    form.disable();
+    
     this.showAlert = true;
     this.alertColor = 'blue';
     this.alertMsg = 'Please wait! Your clip is being uploaded';
-    this.inSubmission = true;
 
-    const clipFileName = uuid();
-    const clipPath = `clips/${clipFileName}.mp4`;
+    const formData = new FormData();
+    formData.append('title', form.value.title);
+    formData.append('description', form.value.description);
 
-    // now, using the service upload to the database.  this.storage.upload(clipPath, this.file);
-    // in the backend check if the user is logged-in and check the size (size < 10 * 1000 * 1000) and type (video/mp4)
+    if(this.file)
+      formData.append('file', this.file);
+
+    this.clipService.uploadClip(formData).subscribe({
+      next: () => {
+        this.alertColor = 'green';
+        this.alertMsg = 'Success!.';
+        form.reset();
+
+        setTimeout(() => this.router.navigate(['/']), 2000);
+        form.enable();
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error(err);
+        this.alertColor = 'red';
+        this.alertMsg = 'Something went wrong. Try again later.';
+        form.enable();
+      }
+    });
   }
 }

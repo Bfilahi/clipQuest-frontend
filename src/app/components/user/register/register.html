@@ -1,10 +1,15 @@
 @if (showAlert) {
     <app-alert [color]="alertColor">
-        {{ alertMsg }}
+        <div class="flex items-center justify-center gap-6">
+            <p>{{ alertMsg }}</p>
+
+            @if(alertColor === 'blue'){
+                <img src="/spinner.gif" alt="" class="w-[2em]">
+            }
+        </div>
     </app-alert>
 }
 
-<!-- Registration Form -->
 <form [formGroup]="registerForm" (ngSubmit)="register(registerForm)">
     <div class="flex flex-col gap-2">
         <div class="flex flex-col gap-2">
@@ -37,10 +42,6 @@
             <app-input-component [control]="registerForm.controls.phoneNumber" placeholder="Enter Phone Number" format="000-000-0000" />
         </div>
 
-        <button type="submit" class="bg-fuchsia-500 py-3 rounded-md transition duration-300 cursor-pointer hover:bg-fuchsia-900
-                                        disabled:opacity-50 disabled:bg-fuchsia-800"
-            [disabled]="registerForm.invalid">
-            Submit
-        </button>
+        <app-submit-button [form]="registerForm" [text]="'Submit'" [width]="'full'" />
     </div>
 </form>

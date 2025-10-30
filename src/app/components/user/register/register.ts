@@ -6,10 +6,11 @@ import { Alert } from "../../shared/alert/alert";
 import { RegisterValidator } from '../../../validators/register-validator';
 import { Auth } from '../../../services/auth';
 import { HttpErrorResponse } from '@angular/common/http';
+import { SubmitButton } from "../../shared/submit-button/submit-button";
 
 @Component({
   selector: 'app-register',
-  imports: [CommonModule, ReactiveFormsModule, InputComponent, Alert],
+  imports: [CommonModule, ReactiveFormsModule, InputComponent, Alert, SubmitButton],
   templateUrl: './register.html',
   styleUrl: './register.css'
 })
@@ -53,6 +54,8 @@ export class Register {
 
 
   public register(form: FormGroup){
+    form.disable();
+    
     this.alertMsg = 'Please wait! your account is being created.';
     this.alertColor = 'blue';
     this.showAlert = true;
@@ -71,11 +74,13 @@ export class Register {
         this.alertColor = 'green';
         this.alertMsg = 'Signup successful';
         form.reset();
+        form.enable();
       },
       error: (err: HttpErrorResponse) => {
         this.alertColor = 'red';
         this.alertMsg = err.error.message || 'Signup failed';
         console.error(err);
+        form.enable();
       }
     });
   }

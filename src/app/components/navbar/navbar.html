@@ -1,23 +1,17 @@
 <header id="header" class="bg-slate-900">
-    <nav class="container mx-auto flex py-8 px-4">
-        <a routerLink="/" class="text-fuchsia-400 font-bold text-2xl uppercase">
+    <nav class="container flex flex-col items-center py-8 px-4 mx-auto">
+        <a routerLink="/" id="logo" class="text-fuchsia-400 font-bold text-2xl uppercase tracking-wider">
             Clip<span class="text-purple-500">Quest</span>
         </a>
 
-        <ul class="flex ms-auto mt-1 gap-4">
+        <ul class="flex mt-1 gap-4">
             @if (!authService.isLoggedIn()) {
-                <li><a href="#" (click)="openModal($event)">Login / Register</a></li>
+                <li><a href="#" class="underline" (click)="openModal($event)">Login / Register</a></li>
             }
             @else {
-                <li>
-                    <!-- <a routerLink="/manage" routerLinkActive="text-fuchsia-400" [routerLinkActiveOptions]="{ exact: true }"
-                        [queryParams]="{ sort: '1' }">
-                        Manage
-                    </a> -->
-                    <a routerLink="/manage" routerLinkActive="text-fuchsia-400" [routerLinkActiveOptions]="{ exact: true }">Manage</a>
-                </li>
-                <li><a routerLink="/upload" routerLinkActive="text-fuchsia-400" [routerLinkActiveOptions]="{ exact: true }">Upload</a></li>            
-                <li><a href="#" (click)="logout($event)">Logout</a></li>
+                <li><a routerLink="/manage" class="underline hover:text-fuchsia-400" routerLinkActive="text-fuchsia-400" [routerLinkActiveOptions]="{ exact: true }">Manage</a></li>
+                <li><a routerLink="/upload" class="underline hover:text-fuchsia-400" routerLinkActive="text-fuchsia-400" [routerLinkActiveOptions]="{ exact: true }">Upload</a></li>            
+                <li><a href="#" class="underline hover:text-fuchsia-400" (click)="logout($event)">Logout</a></li>
             }
         </ul>
     </nav>

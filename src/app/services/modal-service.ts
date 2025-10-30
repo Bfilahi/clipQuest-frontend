@@ -9,7 +9,6 @@ interface IModal{
   providedIn: 'root'
 })
 export class ModalService {
-
   private modals: IModal[] = [];
 
 

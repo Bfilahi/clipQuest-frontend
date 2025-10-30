@@ -3,30 +3,49 @@
 </section>
 
 <section class="container mx-auto mt-14 mb-9 px-4">
+    @if (showAlert) {
+        <app-alert [color]="alertColor" class="fixed left-0 top-1/2 w-full z-50">
+            <div class="flex justify-center items-center gap-6">
+                <p>{{ alertMsg }}</p>
+                @if (alertColor === 'blue') {
+                    <img src="/spinner.gif" alt="" class="w-[2em]">
+                }
+            </div>
+        </app-alert>
+    
+        <div class="fixed inset-0 z-40 bg-indigo-900 opacity-50"></div>
+    }
     <div class="grid grid-cols-1 mb-8 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         @for (clip of clips(); track clip.id) {
-            <div class="rounded-xl overflow-hidden shadow-xl">
-                <a href="#">
-                    <img src="{{clip.thumbnailUrl}}" alt="{{clip.title}} thumbnail">
+            <div class="rounded-xl overflow-hidden shadow-xl h-full">
+                <a routerLink="/clip/{{clip.id}}">
+                    <img src="{{clip.thumbnailUrl}}" alt="{{clip.title}} thumbnail" class="">
                 </a>
-                <div class="bg-slate-900 py-5 px-3 flex flex-wrap gap-2">
+                <div class="bg-slate-900 py-5 px-3 flex flex-col gap-2">
                     <a href="#" class="text-sm me-4 block">{{ clip.title }}</a>
-                    <a href="#" class="text-xs bg-gray-500 block px-2 py-1 rounded-md">
+                    <a href="#" class="text-xs bg-gray-500 w-fit px-2 py-1 rounded-md"
+                    (click)="copyLink($event, clip.pathFile)">
                         Copy Link
                     </a>
                 </div>
-                <div class="bg-slate-700 flex justify-between btn-border relative">
+                <div class="bg-slate-700 flex justify-between btn-border relative rounded-b-xl">
                     <a href="#" class="w-full py-4 text-center hover:text-fuchsia-400 transition duration-300" 
                         (click)="openModal($event, clip)">
                         <span class="material-icons">Edit</span>
                     </a>
-                    <a href="#" class="w-full py-4 text-center hover:text-fuchsia-400 transition duration-300">
+                    <a href="#" (click)="deleteClip($event, clip)"
+                    class="w-full py-4 text-center hover:text-fuchsia-400 transition duration-300">
                         <span class="material-icons">Delete</span>
                     </a>
                 </div>
             </div>
         }
     </div>
+    @if (isLoading() === false && clips().length <= 0) {
+        <app-alert [color]="'red'" class="fixed left-0 top-1/2 w-full z-50">
+            <p>No uploaded videos.</p>
+        </app-alert>
+    }
 </section>
 
 <app-edit [activeClip]="activeClip" (refresh)="refresh($event)"/>

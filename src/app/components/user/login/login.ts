@@ -5,10 +5,11 @@ import { Auth } from '../../../services/auth';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Alert } from '../../shared/alert/alert';
 import { ModalService } from '../../../services/modal-service';
+import { SubmitButton } from "../../shared/submit-button/submit-button";
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, Alert],
+  imports: [FormsModule, Alert, SubmitButton],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
@@ -18,9 +19,11 @@ export class Login {
     password: ''
   }
 
-  public alertMsg: string = 'Please wait! your account is being created.';
+  public alertMsg: string = 'Please wait!.';
   public showAlert: boolean = false;
   public alertColor: any = 'blue';
+
+  public isDisabled: boolean = false;
 
 
   constructor(
@@ -32,9 +35,11 @@ export class Login {
 
 
   public login(form: NgForm){
+    this.isDisabled = true;
+    
     this.showAlert = true;
     this.alertColor = 'blue';
-    this.alertMsg = 'Please wait! your account is being created.'
+    this.alertMsg = 'Please wait!.'
 
     const request: LoginRequest = {
       email: this.credentials.email,
@@ -47,12 +52,14 @@ export class Login {
         this.showAlert = false;
         this.modalService.toggleModal('auth');
         this.router.navigateByUrl(`${this.authService.getReturnUrl()}`);
+        this.isDisabled = false;
       },
       error: (err: HttpErrorResponse) => {
         this.showAlert = true;
         this.alertColor = 'red';
         this.alertMsg = err.error.message || 'Login failed';
         console.error(err);
+        this.isDisabled = false;
       }
     });
   }

@@ -1,7 +1,7 @@
 <section class="container mx-auto my-9">
     <div class="bg-slate-900 p-6">
 
-        <div class="relative">
+        <div class="relative max-w-[55em] rounded-xl overflow-hidden">
             <video
                 #videoPlayer
                 crossorigin="anonymous"
@@ -11,11 +11,16 @@
         </div>
 
         <h2 class="text-2xl font-bold mt-5">{{ clip()?.title }}</h2>
-        <div class="flex justify-between items-center mt-8">
+        <div class="flex justify-between items-center mt-8 max-w-[55em]">
             <div class="owner flex items-center gap-4">
                 <div>
                     <a href="#" class="inline-block w-12 h-12 rounded-full overflow-hidden border border-white">
-                        <img src="{{ clip()?.user?.profilePicture }}" alt="{{ clip()?.user?.firstName }}" class="w-full h-full object-cover">
+                        @if (!clip()?.user?.profilePicture) {
+                            <img src="/Images/profile_placeholder.png" alt="profile placeholder" class="w-full object-cover"/>
+                        }
+                        @else {
+                            <img src="{{clip()?.user?.profilePicture}}" alt="profile" class="w-full h-full object-cover">
+                        }
                     </a>
                 </div>
                 <div>
@@ -37,8 +42,11 @@
             </div>
         </div>
 
-        <div class="my-12">
-            <p class="mt-2 mb-7 opacity-60">{{ clip()?.views }} views <span class="opacity-60 ml-5">{{ clip()?.createdDate }}</span></p>
+
+        <div class="my-10 bg-slate-950 p-2 rounded-sm">
+            <p class="my-1 opacity-60">{{ clip()?.views }} views <span class="opacity-60 ml-5">{{ clip()?.createdDate }}</span></p>
+            <h4 class="underline">Description:</h4>
+            <p>{{ clip()?.description }}</p>
         </div>
 
         <div class="comments">
@@ -46,7 +54,12 @@
 
             <div class="user mt-7 flex items-center gap-5">
                 <div class="w-12 h-12 rounded-full overflow-hidden border">
-                    <img src="{{clip()?.user?.profilePicture}}" alt="profile image" class="w-full h-full object-cover">
+                    @if (!clip()?.user?.profilePicture) {
+                        <img src="/Images/profile_placeholder.png" alt="profile placeholder" class="w-full object-cover"/>
+                    }
+                    @else {
+                        <img src="{{clip()?.user?.profilePicture}}" alt="profile" class="w-full h-full object-cover">
+                    }
                 </div>
                 <form #commentForm="ngForm" (ngSubmit)="addComment(commentForm)" class="w-full">
                     <input placeholder="Add a comment..." name="comment" #comment ngModel
@@ -69,7 +82,7 @@
                             </div>
                             <p class="bg-slate-950 p-1 w-full text-sm">{{ comment.comment }}</p>
 
-                            @if (userComments().length > 0 && isUserComment(comment.id)) {
+                            @if(checkUserComment(comment.id)){
                                 <small>
                                     <a href="#" class="underline opacity-50" (click)="deleteComment($event, comment.id)">Delete comment</a>
                                 </small>

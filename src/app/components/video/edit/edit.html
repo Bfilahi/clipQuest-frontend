@@ -3,7 +3,12 @@
 
   @if (showAlert) {
     <app-alert [color]="alertColor">
-      <p>{{ alertMsg }}</p>
+      <div class="flex items-center justify-center gap-6">
+        <p>{{ alertMsg }}</p>
+        @if(alertColor === 'blue'){
+          <img src="/spinner.gif" alt="" class="w-[2em]">
+        }
+      </div>
     </app-alert>
   }
 
@@ -20,12 +25,7 @@
     </div>
 
     <div class="mt-4 text-right">
-      <button type="submit" 
-      class="bg-fuchsia-500 p-3 rounded-md transition duration-300 enabled:cursor-pointer hover:bg-fuchsia-900
-        disabled:opacity-50 disabled:bg-fuchsia-800"
-        [disabled]="editForm.invalid">
-        Update
-      </button>
+      <app-submit-button [form]="editForm" [text]="'Update'" /> 
     </div>
   </form>
 </app-modal>
