@@ -1,5 +1,6 @@
-<button type="submit" class="bg-fuchsia-500 p-3 rounded-md transition duration-300 enabled:cursor-pointer hover:bg-fuchsia-900
-                                disabled:opacity-50 disabled:bg-fuchsia-800"
+<button type="submit" 
+class="bg-fuchsia-500 p-3 rounded-md transition duration-300 enabled:cursor-pointer hover:bg-fuchsia-900
+        disabled:opacity-50 disabled:bg-fuchsia-800"
     [ngClass]="{'w-full': width === 'full'}"
     [disabled]="form.invalid || form.disabled || isDisabled">
     {{ text }}
