@@ -2,6 +2,10 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.0.
 
+# Demo
+
+![clipquest_browse](https://github.com/user-attachments/assets/db4e3615-c565-45cc-a842-7ba9515c0b0f)
+
 ## Development server
 
 To start a local development server, run:
