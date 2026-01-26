@@ -28,6 +28,13 @@
               "src/styles.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "node_modules/video.js/dist/video-js.css"
+            ],
+            "allowedCommonJsDependencies": [
+              "video.js",
+              "@videojs/xhr",
+              "mux.js",
+              "videojs-vtt.js",
+              "@xmldom/xmldom"
             ]
           },
           "configurations": {

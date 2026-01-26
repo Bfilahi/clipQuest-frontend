@@ -1,15 +1,27 @@
 import { Routes } from '@angular/router';
-import { PageNotFound } from './components/page-not-found/page-not-found';
-import { Home } from './components/home/home';
-import { Manage } from './components/video/manage/manage';
-import { Upload } from './components/video/upload/upload';
-import { Clip } from './components/clip/clip';
 import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
-    {path: '', component: Home},
-    {path: 'manage', component: Manage, canActivate: [authGuard]},
-    {path: 'upload', component: Upload, canActivate: [authGuard]},
-    {path: 'clip/:id', component: Clip},
-    {path: '**', component: PageNotFound}
+    {
+        path: '',
+        loadComponent: () => import('./components/home/home').then(m => m.Home)
+    },
+    {
+        path: 'manage', 
+        loadComponent: () => import('./components/video/manage/manage').then(m => m.Manage), 
+        canActivate: [authGuard]
+    },
+    {
+        path: 'upload', 
+        loadComponent: () => import('./components/video/upload/upload').then(m => m.Upload),
+        canActivate: [authGuard]
+    },
+    {
+        path: 'clip/:id',
+        loadComponent: () => import('./components/clip/clip').then(m => m.Clip)
+    },
+    {
+        path: '**',
+        loadComponent: () => import('./components/page-not-found/page-not-found').then(m => m.PageNotFound)
+    }
 ];
