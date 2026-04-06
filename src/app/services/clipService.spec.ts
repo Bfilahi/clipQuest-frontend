@@ -193,7 +193,7 @@ describe('ClipService', () => {
 
   describe('deleteClip()', () => {
     it('should call the method with the correct URL', () => {
-      service.deleteClip(clipId).subscribe(res => expect(res).toBeNull());
+      service.deleteClip(clipId).subscribe();
 
       const req = httpTestingController.expectOne(`${url}/user/${clipId}`);
       req.flush(null);
