@@ -8,7 +8,7 @@ export class RegisterValidator {
             const matchingControl = group.get(matchingControlName);
 
             if(!control || !matchingControl)
-                return { controlNotFount: false };
+                return { controlNotFound: false };
 
             const error = control.value === matchingControl.value ? null : { noMatch: true };
 
