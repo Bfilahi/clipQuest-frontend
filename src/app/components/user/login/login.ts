@@ -57,7 +57,7 @@ export class Login {
       error: (err: HttpErrorResponse) => {
         this.showAlert = true;
         this.alertColor = 'red';
-        this.alertMsg = err.error.message || 'Login failed';
+        this.alertMsg = err.error?.message ?? 'Login failed';
         console.error(err);
         this.isDisabled = false;
       }
