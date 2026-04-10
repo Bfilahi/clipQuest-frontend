@@ -178,7 +178,7 @@ describe('Login', () => {
   });
 
   describe('login() - Error handling', () => {
-    it('should showAlert to true with alertColor = "red" on error', () => {
+    it('should set showAlert to true with alertColor = "red" on error', () => {
       const error = new HttpErrorResponse({status: 500});
       mockAuthService.login.and.returnValue(throwError(() => error));
 

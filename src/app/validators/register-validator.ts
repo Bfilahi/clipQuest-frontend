@@ -17,4 +17,15 @@ export class RegisterValidator {
             return error;
         }
     }
+
+    static noWhiteSpaceOnly(): ValidatorFn{
+        return(control: AbstractControl): ValidationErrors | null => {
+            if(typeof control.value === 'string'){
+                const isWhiteSpaceOnly = (control.value ?? '').trim().length === 0;
+                return isWhiteSpaceOnly? { whiteSpace: true } : null;
+            }
+
+            return null;
+        }
+    }
 }

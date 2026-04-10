@@ -42,6 +42,12 @@
                 Passwords do not match.
             </p>
         }
+
+        @if (control.errors?.['whiteSpace']){
+            <p class="text-red-400">
+                Field must not be empty.
+            </p>
+        }
     </ng-container>
 }
 
