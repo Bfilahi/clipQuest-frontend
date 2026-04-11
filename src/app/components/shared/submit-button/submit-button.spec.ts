@@ -54,4 +54,18 @@ describe('SubmitButton', () => {
     const button = fixture.nativeElement.querySelector('button');
     expect(button.disabled).toBeTrue();
   });
+
+  it('should enable button when form is enabled/valid', () => {
+    const button = fixture.nativeElement.querySelector('button');
+    expect(button.disabled).toBeFalse();
+  });
+
+  it('should enable button when isDisabled is false', () => {
+    component.isDisabled = false;
+
+    fixture.detectChanges();
+
+    const button = fixture.nativeElement.querySelector('button');
+    expect(button.disabled).toBeFalse();
+  });
 });
