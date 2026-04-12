@@ -17,7 +17,10 @@ export class TabsContainer implements AfterContentInit{
     const activeTabs = this.tabs?.filter(tab => tab.active);
 
     if(!activeTabs || activeTabs.length === 0){
-      this.selectTab(this.tabs!.first);
+      const firstTab = this.tabs?.first;
+      if (firstTab) {
+        this.selectTab(firstTab);
+      }
     }
   }
 
