@@ -8,6 +8,7 @@ import { SubmitButton } from "../../shared/submit-button/submit-button";
 import { ClipService } from '../../../services/clipService';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { RegisterValidator } from '../../../validators/register-validator';
 
 @Component({
   selector: 'app-upload',
@@ -25,8 +26,8 @@ export class Upload {
   public alertMsg: string = 'Please wait! Your clip is being uploaded';
 
   public uploadForm = new FormGroup({
-    title: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    description: new FormControl('', [Validators.required, Validators.minLength(3)])
+    title: new FormControl('', [Validators.required, Validators.minLength(3), RegisterValidator.noWhiteSpaceOnly()]),
+    description: new FormControl('', [Validators.required, Validators.minLength(3), RegisterValidator.noWhiteSpaceOnly()])
   });
 
 
@@ -37,7 +38,7 @@ export class Upload {
 
 
 
-  public storeFile(event: Event){    
+  public storeFile(event: Event){   
     this.isDragOver = false;
 
     this.file = (event as DragEvent).dataTransfer ? 
