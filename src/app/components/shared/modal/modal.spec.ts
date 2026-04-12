@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Modal } from './modal';
 import { ModalService } from '../../../services/modal-service';
-import { Auth } from '../../../services/auth';
 import { By } from '@angular/platform-browser';
 
 describe('Modal', () => {
@@ -10,17 +9,14 @@ describe('Modal', () => {
   let fixture: ComponentFixture<Modal>;
 
   let mockModalService: jasmine.SpyObj<ModalService>;
-  let mockAuthService: jasmine.SpyObj<Auth>;
 
   beforeEach(async () => {
     mockModalService = jasmine.createSpyObj(['toggleModal', 'isModalOpen']);
-    mockAuthService = jasmine.createSpyObj(['']);
 
     await TestBed.configureTestingModule({
       imports: [Modal],
       providers: [
         {provide: ModalService, useValue: mockModalService},
-        {provide: Auth, useValue: mockAuthService}
       ]
     })
     .compileComponents();

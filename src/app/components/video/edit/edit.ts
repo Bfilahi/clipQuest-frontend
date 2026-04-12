@@ -10,6 +10,7 @@ import { ClipService } from '../../../services/clipService';
 import { ClipResponse } from '../../../response/clipResponse';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SubmitButton } from "../../shared/submit-button/submit-button";
+import { RegisterValidator } from '../../../validators/register-validator';
 
 @Component({
   selector: 'app-edit',
@@ -29,8 +30,8 @@ export class Edit implements OnInit, OnDestroy{
 
   public editForm = new FormGroup({
     clipID: new FormControl('', {nonNullable: true}),
-    title: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    description: new FormControl('', [Validators.required, Validators.minLength(3)])
+    title: new FormControl('', [Validators.required, Validators.minLength(3), RegisterValidator.noWhiteSpaceOnly()]),
+    description: new FormControl('', [Validators.required, Validators.minLength(3), RegisterValidator.noWhiteSpaceOnly()])
   });
 
   public showAlert: boolean = false;
