@@ -45,9 +45,15 @@ describe('Clip', () => {
       'view',
       'getLikeStatus',
     ]);
-    mockModalService = jasmine.createSpyObj(['toggleModal']);
+    mockModalService = jasmine.createSpyObj([
+      'toggleModal',
+      'register',
+      'unregister',
+    ]);
     mockAuthService = jasmine.createSpyObj([''], { isLoggedIn: signal(false) });
     form = jasmine.createSpyObj('NgForm', ['reset'], {value: {comment: 'Test comment'}});
+
+    mockModalService.register.and.returnValue(void 0);
 
 
     await TestBed.configureTestingModule({

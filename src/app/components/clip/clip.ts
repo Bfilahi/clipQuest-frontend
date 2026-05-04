@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ClipService } from '../../services/clipService';
 import { ClipResponse } from '../../response/clipResponse';
@@ -23,7 +23,7 @@ import { FormsModule, NgForm } from '@angular/forms';
   templateUrl: './clip.html',
   styleUrl: './clip.css'
 })
-export class Clip implements OnInit{
+export class Clip implements OnInit, OnDestroy{
   @ViewChild('videoPlayer', {static: true}) target!: ElementRef;
 
   public LikeType = LikeType;
@@ -56,6 +56,8 @@ export class Clip implements OnInit{
 
     if(this.authService.isLoggedIn())
       this.getLikeInfo();
+    else
+      this.modalService.register('auth');
   }
 
 
@@ -213,6 +215,10 @@ export class Clip implements OnInit{
         console.error(err);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.modalService.unregister('auth');
   }
 
 }
